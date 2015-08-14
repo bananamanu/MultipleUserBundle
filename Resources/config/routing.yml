@@ -1,0 +1,3 @@
+bananamanu_multiple_user_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: BananamanuMultipleUserBundle:Default:index }
