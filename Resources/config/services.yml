@@ -1,4 +1,7 @@
 services:
-#    bananamanu_multiple_user.example:
-#        class: Bananamanu\MultipleUserBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    bananamanu_multiple_user.interactive_event_listener:
+        class: Bananamanu\MultipleUserBundle\EventListener\InteractiveLoginListener
+        arguments: [@ezpublish.api.service.user]
+        tags:
+            - { name: kernel.event_subscriber }
+
