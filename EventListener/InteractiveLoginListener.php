@@ -36,6 +36,7 @@ class InteractiveLoginListener implements EventSubscriberInterface
         {
             $event->setApiUser( $this->userService->loadUserByLogin( 'guestmember' ) );
         }
+
     }
 
 

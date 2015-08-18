@@ -1,0 +1,4 @@
+parameters:
+    fos_db_driver: orm
+    fos_firewall_name: ezpublish_front
+    fos_user_class: Bananamanu\MultipleUserBundle\Entity\User
