@@ -2,21 +2,22 @@
 
 namespace Bananamanu\MultipleUserBundle\EventListener;
 
-use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\Core\MVC\Symfony\Event\InteractiveLoginEvent;
 use eZ\Publish\Core\MVC\Symfony\MVCEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Bananamanu\MultipleUserBundle\Service\UserMatcherService;
 
 class InteractiveLoginListener implements EventSubscriberInterface
 {
-    /**
-     * @var \eZ\Publish\API\Repository\UserService
-     */
-    private $userService;
 
-    public function __construct( UserService $userService)
+    /**
+     * @var \Bananamanu\MultipleUserBundle\Service\UserMatcherService
+     */
+    private $userMatcherService;
+
+    public function __construct( UserMatcherService $userMatcherService)
     {
-        $this->userService = $userService;
+        $this->userMatcherService = $userMatcherService;
     }
 
     public static function getSubscribedEvents()
@@ -28,15 +29,13 @@ class InteractiveLoginListener implements EventSubscriberInterface
 
     public function onInteractiveLogin( InteractiveLoginEvent $event )
     {
-        $request = $event->getRequest();
-        $username = $request->request->get('_username');
 
-        // Guest user in memory
-        if ($username == 'guest')
+        // Call userMatcher service and try to match user
+        $apiUser = $this->userMatcherService->matchUser( $event->getAuthenticationToken() );
+        if ($apiUser)
         {
-            $event->setApiUser( $this->userService->loadUserByLogin( 'guestmember' ) );
+            $event->setApiUser($apiUser);
         }
-
     }
 
 
